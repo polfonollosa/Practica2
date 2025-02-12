@@ -9,6 +9,10 @@ public class EnemyAI : MonoBehaviour
     public Transform pointB;
     public float patrolSpeed = 3f;
 
+    [Header("Ajuste de Rotación")]
+    public float rotationOffset = -90f;  
+
+
     [Header("Persecución")]
     public float chaseSpeed = 2.5f;
     public float detectionRadius = 3f;
@@ -91,28 +95,33 @@ public class EnemyAI : MonoBehaviour
 
     void MoveTowards(Vector3 target, float speed)
     {
-        Vector2 direction = (target - transform.position).normalized;
-
-        if (direction.magnitude > 0.01f)
-        {
-            lastDirection = direction; // Guardar la última dirección si hay movimiento
-        }
+        Vector2 moveDir = (target - transform.position).normalized;
 
         transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
-        float angle = Mathf.Atan2(lastDirection.y, lastDirection.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle - 90);
+
+        float angle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
+
+        transform.rotation = Quaternion.Euler(0, 0, angle + rotationOffset);
     }
 
     bool CanSeePlayer()
     {
+        // Calcula la dirección hacia el jugador
         Vector2 directionToPlayer = (player.position - transform.position).normalized;
-        float adjustedAngle = Vector2.Angle(lastDirection, directionToPlayer);
 
-        if (adjustedAngle > fieldOfView / 2) return false;
+        // Usa -transform.right para que la dirección de "frente" sea la misma que la del cono de detección
+        float adjustedAngle = Vector2.Angle(-transform.right, directionToPlayer);
 
+        // Si el jugador está fuera del ángulo de visión, no se detecta
+        if (adjustedAngle > fieldOfView / 2)
+            return false;
+
+        // Comprueba la distancia al jugador
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-        if (distanceToPlayer > detectionRadius) return false;
+        if (distanceToPlayer > detectionRadius)
+            return false;
 
+        // Realiza un raycast para ver si hay un obstáculo en el camino
         RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, detectionRadius, obstacleMask | playerMask);
         return hit.collider != null && hit.collider.CompareTag("Player");
     }
@@ -124,19 +133,31 @@ public class EnemyAI : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        if (pointA != null && pointB != null) Gizmos.DrawLine(pointA.position, pointB.position);
+        // Dibuja la línea entre los puntos de patrulla si están asignados
+        if (pointA != null && pointB != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(pointA.position, pointB.position);
+        }
 
+        // Dibuja el radio de detección (esfera roja)
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
 
-        // 🔹 Usamos lastDirection para la dirección del cono de visión
-        Vector3 forward = lastDirection;
+        // Usamos -transform.right para girar el cono 180 grados
+        Vector3 forward = -transform.right;
+
+        // Calcula los límites del campo de visión usando el ángulo fieldOfView
         Vector3 leftBoundary = Quaternion.Euler(0, 0, fieldOfView / 2) * forward * detectionRadius;
         Vector3 rightBoundary = Quaternion.Euler(0, 0, -fieldOfView / 2) * forward * detectionRadius;
 
-        Gizmos.color = new Color(0.5f, 0.5f, 0.5f, 0.3f); // Gris opaco
-        Gizmos.DrawLine(transform.position, transform.position + leftBoundary);
-        Gizmos.DrawLine(transform.position, transform.position + rightBoundary);
+        // Establece un color amarillo transparente para el cono de detección
+        Gizmos.color = new Color(1f, 1f, 0f, 0.3f);
+        Vector3 origin = transform.position;
+
+        // Dibuja las líneas que forman el triángulo
+        Gizmos.DrawLine(origin, origin + leftBoundary);
+        Gizmos.DrawLine(origin, origin + rightBoundary);
+        Gizmos.DrawLine(origin + leftBoundary, origin + rightBoundary);
     }
 }

@@ -313,7 +313,7 @@ GameObject:
   - component: {fileID: 106113512}
   m_Layer: 9
   m_Name: Wall01
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -634,10 +634,9 @@ GameObject:
   - component: {fileID: 301741760}
   - component: {fileID: 301741762}
   - component: {fileID: 301741761}
-  - component: {fileID: 301741763}
   m_Layer: 9
   m_Name: Wall05
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -759,18 +758,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &301741763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 301741759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &414159872
 GameObject:
   m_ObjectHideFlags: 0
@@ -784,7 +771,7 @@ GameObject:
   - component: {fileID: 414159874}
   m_Layer: 9
   m_Name: Wall04
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -919,7 +906,7 @@ GameObject:
   - component: {fileID: 436615255}
   m_Layer: 0
   m_Name: Wall02
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1638,8 +1625,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointA: {fileID: 1034057875}
   pointB: {fileID: 169621972}
-  patrolSpeed: 1.5
-  chaseSpeed: 2
+  patrolSpeed: 1
+  rotationOffset: -180
+  chaseSpeed: 3
   detectionRadius: 3
   fieldOfView: 60
   obstacleMask:
@@ -1960,7 +1948,7 @@ GameObject:
   - component: {fileID: 944901010}
   m_Layer: 9
   m_Name: Walls
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2082,7 +2070,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1701691617}
   detectionRange: 5
-  fireRate: 1
+  fireRate: 1.5
   bulletPrefab: {fileID: 7481901377532364224, guid: 5b657e9b698f63641802c3e529d0e688,
     type: 3}
   bulletSpawnPoint: {fileID: 544306906}
@@ -2338,8 +2326,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointA: {fileID: 1536561121}
   pointB: {fileID: 1382038775}
-  patrolSpeed: 1.5
-  chaseSpeed: 2
+  patrolSpeed: 2
+  rotationOffset: -180
+  chaseSpeed: 3
   detectionRadius: 3
   fieldOfView: 90
   obstacleMask:
@@ -2750,7 +2739,7 @@ GameObject:
   - component: {fileID: 1865121216}
   m_Layer: 9
   m_Name: Wall03
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
